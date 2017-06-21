@@ -384,7 +384,7 @@ def Inference(sess, model):
             feed_dict = {model.time_placeholder: float(t),
                          model.attribute_placeholder: z}
             preds = sess.run(fetches=inference_op, feed_dict=feed_dict)
-            
+
             app.DisplayCell(preds)
 
             t += 1e-5 * app.GetSpeed() * FLAGS.batch_size
