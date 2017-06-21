@@ -128,7 +128,6 @@ class DrawWindow(BufferedWindow):
                 img_count = data.shape[0]
                 height = data.shape[1]
                 width = data.shape[2]
-                channels = data.shape[3]
 
                 grid_size = int(np.sqrt(img_count))
 
