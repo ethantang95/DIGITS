@@ -846,7 +846,7 @@ class Hdf5Loader(LoaderFactory):
         for db in self.h5dbs:
             db.close()
 
-
+            
 class GanGridLoader(LoaderFactory):
     """
     The GanGridLoader generates data for a GAN.
