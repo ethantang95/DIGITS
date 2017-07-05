@@ -22,13 +22,11 @@ import time
 
 import datetime
 import inspect
-import json
 import logging
 import math
 import numpy as np
 import os
 import pickle
-import time
 
 from six.moves import xrange  # noqa
 import tensorflow as tf
@@ -466,6 +464,7 @@ def input_generator(zs_file, batch_size):
     batch = tf.pack(tensors) + attribute_placeholder
 
     return batch, time_placeholder, attribute_placeholder
+
 
 def main(_):
 

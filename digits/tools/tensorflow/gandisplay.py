@@ -12,6 +12,7 @@ USE_BUFFERED_DC = True
 myEVT = wx.NewEventType()
 DISPLAY_GRID_EVT = wx.PyEventBinder(myEVT, 1)
 
+
 class MyEvent(wx.PyCommandEvent):
     """Event to signal that a count value is ready"""
     def __init__(self, etype, eid, value=None):
@@ -25,6 +26,7 @@ class MyEvent(wx.PyCommandEvent):
 
         """
         return self._value
+
 
 class BufferedWindow(wx.Window):
 
@@ -61,7 +63,7 @@ class BufferedWindow(wx.Window):
         # just here as a place holder.
         # This method should be over-ridden when subclassed
         pass
-    
+
     def OnPaint(self, event):
         # All that is needed here is to draw the buffer to screen
         if USE_BUFFERED_DC:
@@ -104,7 +106,7 @@ class BufferedWindow(wx.Window):
         del dc  # need to get rid of the MemoryDC before Update() is called.
         self.Refresh()
         self.Update()
-        
+
 
 class DrawWindow(BufferedWindow):
     def __init__(self, *args, **kwargs):
@@ -161,7 +163,6 @@ class TestFrame(wx.Frame):
                           style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER)
 
         # Set up the MenuBar
-
         MenuBar = wx.MenuBar()
 
         file_menu = wx.Menu()
@@ -238,6 +239,7 @@ class TestFrame(wx.Frame):
                 self.statusbar.SetStatusText('%.1ffps' % fps)
                 self.last_fps_update = time.time()
         self.last_frame_timestamp = time.time()
+
 
 class DemoApp(wx.App):
 
