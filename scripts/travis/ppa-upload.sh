@@ -28,5 +28,3 @@ cd "$ROOT_DIR/packaging/deb/dist/"
 cd ./*xenial/
 debsign -k 97A4B458 ./*source.changes
 dput -U "ppa:nvidia-digits/${PPA_NAME}/ubuntu/xenial" ./*source.changes
-
-echo "ppa-upload.sh finished"
