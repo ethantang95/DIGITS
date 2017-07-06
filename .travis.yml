@@ -8,6 +8,7 @@ python: 2.7
 
 env:
     global:
+        - OPENBLAS_ROOT=~/openblas
         - CAFFE_ROOT=~/caffe
         - TORCH_ROOT=~/torch
         - OMP_NUM_THREADS=1
