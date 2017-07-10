@@ -326,6 +326,7 @@ def large_graph():
     return flask.render_template('models/large_graph.html', job=job)
 
 
+
 @blueprint.route('/infer_one.json', methods=['POST'])
 @blueprint.route('/infer_one', methods=['POST', 'GET'])
 def infer_one():
@@ -718,13 +719,10 @@ def infer_many():
         ), status_code
 
 
-def create_inference_db(model_job, data_extension_id):
+def create_inference_db(model_job):
     # create instance of extension class
-    extension_class = extensions.data.get_extension(data_extension_id)
-    if hasattr(model_job.dataset, 'extension_userdata'):
-        extension_userdata = model_job.dataset.extension_userdata
-    else:
-        extension_userdata = {}
+    extension_class = extensions.data.get_extension(model_job.dataset.extension_id)
+    extension_userdata = model_job.dataset.extension_userdata
     extension_userdata.update({'is_inference_db': True})
     extension = extension_class(**extension_userdata)
 
@@ -748,7 +746,7 @@ def create_inference_db(model_job, data_extension_id):
         batch_size=1,
         num_threads=1,
         force_same_shape=0,
-        extension_id=data_extension_id,
+        extension_id=model_job.dataset.extension_id,
         extension_userdata=extension.get_user_data(),
     )
 
