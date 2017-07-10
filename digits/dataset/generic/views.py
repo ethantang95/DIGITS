@@ -184,6 +184,7 @@ def explore():
             s.write(datum.data)
             s.seek(0)
             img = PIL.Image.open(s)
+
             if cmap and img.mode in ['L', '1']:
                 data = np.array(img)
                 data = cmap.to_rgba(data) * 255
