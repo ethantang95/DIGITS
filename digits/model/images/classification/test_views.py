@@ -3,7 +3,6 @@ from __future__ import absolute_import
 
 import itertools
 import json
-import math
 import os
 import shutil
 import tempfile
@@ -20,7 +19,6 @@ from bs4 import BeautifulSoup
 
 from digits.config import config_value
 import digits.dataset.images.classification.test_views
-from digits.frameworks import CaffeFramework
 import digits.test_views
 from digits import test_utils
 import digits.webapp

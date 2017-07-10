@@ -326,7 +326,6 @@ def large_graph():
     return flask.render_template('models/large_graph.html', job=job)
 
 
-
 @blueprint.route('/infer_one.json', methods=['POST'])
 @blueprint.route('/infer_one', methods=['POST', 'GET'])
 def infer_one():

@@ -135,7 +135,6 @@ class UserModel(Tower):
 
     @classmethod
     def network(cls):
-<<<<<<< HEAD
         if cls.FRAMEWORK == 'torch':
             return cls.TORCH_NETWORK
         elif cls.FRAMEWORK == 'caffe':
@@ -144,9 +143,6 @@ class UserModel(Tower):
             return cls.TENSORFLOW_NETWORK
         else:
             raise ValueError('Unknown framework %s' % cls.FRAMEWORK)
-=======
-        return cls.TORCH_NETWORK if cls.FRAMEWORK == 'torch' else cls.CAFFE_NETWORK
->>>>>>> digits-master/tensorflow
 
 
 class BaseViewsTestWithAnyDataset(BaseViewsTest):

@@ -366,7 +366,6 @@ def large_graph():
     return flask.render_template('models/large_graph.html', job=job)
 
 
-
 @blueprint.route('/classify_one.json', methods=['POST'])
 @blueprint.route('/classify_one', methods=['POST', 'GET'])
 def classify_one():
