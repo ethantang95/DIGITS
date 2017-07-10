@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # Copyright (c) 2016-2017, NVIDIA CORPORATION.  All rights reserved.
+=======
+# Copyright (c) 2016, NVIDIA CORPORATION.  All rights reserved.
+>>>>>>> Explore generic datasets
 from __future__ import absolute_import
 
 import lmdb
