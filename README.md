@@ -3,8 +3,7 @@
 [![Build Status](https://travis-ci.org/NVIDIA/DIGITS.svg?branch=master)](https://travis-ci.org/NVIDIA/DIGITS)
 
 DIGITS (the **D**eep Learning **G**PU **T**raining **S**ystem) is a webapp for training deep learning models.
-
-The currently supported frameworks are: Caffe 1, Torch, and Tensorflow
+The currently supported frameworks are: Caffe, Torch, and Tensorflow.
 
 # Installation
 
