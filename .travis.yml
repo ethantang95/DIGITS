@@ -117,6 +117,7 @@ addons:
             - python-opencv
             - python-pil
             - python-pip
+#            - python-protobuf
             - python-psutil
             - python-pydot
             - python-requests
