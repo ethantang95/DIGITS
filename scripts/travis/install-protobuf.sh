@@ -27,6 +27,6 @@ cd $INSTALL_DIR
 ./configure --prefix=/usr
 make -j$(nproc)
 sudo make install
-ldconfig
+sudo ldconfig
 cd $INSTALL_DIR/python
 python setup.py install --cpp_implementation
