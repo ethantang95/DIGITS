@@ -1,3 +1,9 @@
+from model import Tower
+from utils import model_property
+import tensorflow as tf
+import digits
+
+
 class UserModel(Tower):
 
     @model_property
@@ -12,7 +18,8 @@ class UserModel(Tower):
 
         def maxpool2d(x, k, s, name, padding='VALID'):
             # MaxPool2D wrapper
-            return tf.nn.max_pool(x, ksize=[1, k, k, 1], strides=[1, s, s, 1], padding=padding, name=name + '_maxpool2d')
+            return tf.nn.max_pool(x, ksize=[1, k, k, 1], strides=[1, s, s, 1],
+                                  padding=padding, name=name + '_maxpool2d')
 
         # Create model
         def conv_net(x, weights, biases):
@@ -41,14 +48,16 @@ class UserModel(Tower):
 
             # Output, class prediction
             out = tf.add(tf.matmul(fc1, weights['out'], name='OUT_multi'), biases['out'], name='OUT_add')
-            
-            true_out = tf.add(tf.matmul(out, weights['true_out'], name='OUT_multi'), biases['true_out'], name='TRUE_OUT_add')
+
+            true_out = tf.add(tf.matmul(out, weights['true_out'], name='OUT_multi'),
+                              biases['true_out'], name='TRUE_OUT_add')
             return true_out
 
         # Store layers weight & bias
         weights = {
             # 5x5 conv, 1 input, 20 outputs
-            'wc1': tf.get_variable('wc1', [5, 5, self.input_shape[2], 20], initializer=tf.contrib.layers.xavier_initializer()),
+            'wc1': tf.get_variable('wc1', [5, 5, self.input_shape[2], 20],
+                                   initializer=tf.contrib.layers.xavier_initializer()),
             # 5x5 conv, 20 inputs, 50 outputs
             'wc2': tf.get_variable('wc2', [5, 5, 20, 50], initializer=tf.contrib.layers.xavier_initializer()),
             # fully connected, 4*4*16=800 inputs, 500 outputs
@@ -74,11 +83,10 @@ class UserModel(Tower):
 
         model = conv_net(self.x, weights, biases)
         return model
-
+
     @model_property
     def loss(self):
         loss = digits.classification_loss(self.inference, self.y)
         accuracy = digits.classification_accuracy(self.inference, self.y)
         self.summaries.append(tf.summary.scalar(accuracy.op.name, accuracy))
         return loss
-        

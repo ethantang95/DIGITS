@@ -22,6 +22,8 @@
 # SOFTWARE.
 
 import tensorflow as tf
+from model import Tower
+from utils import model_property
 
 image_summary = tf.summary.image
 scalar_summary = tf.summary.scalar
@@ -323,16 +325,22 @@ class UserModel(Tower):
             # aggregate losses across batch
 
             # we are using the cross entropy loss for all these losses
-            d_real = tf.nn.sigmoid_cross_entropy_with_logits(logits=self.D_logits, labels=tf.ones_like(self.D), name="loss_D_real")
+            d_real = tf.nn.sigmoid_cross_entropy_with_logits(logits=self.D_logits,
+                                                             labels=tf.ones_like(self.D),
+                                                             name="loss_D_real")
             self.d_loss_real = tf.reduce_mean(d_real)
-            d_fake = tf.nn.sigmoid_cross_entropy_with_logits(logits=self.D_logits_, labels=tf.zeros_like(self.D_), name="loss_D_fake")
+            d_fake = tf.nn.sigmoid_cross_entropy_with_logits(logits=self.D_logits_,
+                                                             labels=tf.zeros_like(self.D_),
+                                                             name="loss_D_fake")
             self.d_loss_fake = tf.reduce_mean(d_fake)
             self.d_loss = (self.d_loss_real + self.d_loss_fake) / 2.
             # the typical GAN set-up is that of a minimax game where D is trying to minimize
             # its own error and G is trying to maximize D's error however note how we are flipping G labels here:
             # instead of maximizing D's error, we are minimizing D's error on the 'wrong' label
             # this trick helps produce a stronger gradient
-            g_loss = tf.nn.sigmoid_cross_entropy_with_logits(logits=self.D_logits_, labels=tf.ones_like(self.D_), name="loss_G")
+            g_loss = tf.nn.sigmoid_cross_entropy_with_logits(logits=self.D_logits_,
+                                                             labels=tf.ones_like(self.D_),
+                                                             name="loss_G")
             self.g_loss = tf.reduce_mean(g_loss)
 
             # create some summaries for debug and monitoring
@@ -442,7 +450,7 @@ class UserModel(Tower):
         - concatenate conditioing - [N, 14, 14, 138]
         - transpose convolution with 1 filter and stride 2 - [N, 28, 28, 1]
         """
-        with tf.variable_scope("generator") as scope:
+        with tf.variable_scope("generator"):
 
             s = self.output_size
             s2, s4 = int(s/2), int(s/4)

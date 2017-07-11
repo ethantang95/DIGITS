@@ -22,6 +22,8 @@
 # SOFTWARE.
 
 import tensorflow as tf
+from model import Tower
+from utils import model_property
 
 image_summary = tf.summary.image
 scalar_summary = tf.summary.scalar
@@ -406,7 +408,7 @@ class UserModel(Tower):
         - concatenate conditioing - [N, 14, 14, 138]
         - transpose convolution with 1 filter and stride 2 - [N, 28, 28, 1]
         """
-        with tf.variable_scope("generator") as scope:
+        with tf.variable_scope("generator"):
             s = self.output_size
             s2, s4 = int(s/2), int(s/4)
 

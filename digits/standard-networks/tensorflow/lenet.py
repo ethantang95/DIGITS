@@ -1,3 +1,9 @@
+from model import Tower
+from utils import model_property
+import tensorflow as tf
+import digits
+
+
 class UserModel(Tower):
 
     @model_property
@@ -45,7 +51,8 @@ class UserModel(Tower):
         # Store layers weight & bias
         weights = {
             # 5x5 conv, 1 input, 20 outputs
-            'wc1': tf.get_variable('wc1', [5, 5, self.input_shape[2], 20], initializer=tf.contrib.layers.xavier_initializer()),
+            'wc1': tf.get_variable('wc1', [5, 5, self.input_shape[2], 20],
+                                   initializer=tf.contrib.layers.xavier_initializer()),
             # 5x5 conv, 20 inputs, 50 outputs
             'wc2': tf.get_variable('wc2', [5, 5, 20, 50], initializer=tf.contrib.layers.xavier_initializer()),
             # fully connected, 4*4*16=800 inputs, 500 outputs

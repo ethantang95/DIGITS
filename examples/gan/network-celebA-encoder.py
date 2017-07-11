@@ -22,6 +22,8 @@
 # SOFTWARE.
 
 import tensorflow as tf
+from model import Tower
+from utils import model_property
 
 image_summary = tf.summary.image
 scalar_summary = tf.summary.scalar
@@ -372,7 +374,7 @@ class UserModel(Tower):
         - transpose convolution with 3 filters and stride 2 - [N, 64, 64, 3]
         - tanh - [N, 64, 64, 3]
         """
-        with tf.variable_scope("generator") as scope:
+        with tf.variable_scope("generator"):
             s = self.output_size
             s2, s4, s8, s16 = int(s/2), int(s/4), int(s/8), int(s/16)
 

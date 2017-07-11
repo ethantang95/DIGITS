@@ -1,6 +1,11 @@
 # The auxillary branches as spcified in the original googlenet V1 model do exist in this implementation of
 # googlenet but it is not used. To use it, be sure to check self.is_training to ensure that it is only used
 # during training.
+from model import Tower
+from utils import model_property
+import tensorflow as tf
+import digits
+
 
 class UserModel(Tower):
 
@@ -26,7 +31,7 @@ class UserModel(Tower):
 
         model = self.max_pool(model, 3, 2)
 
-        model = tf.nn.local_response_normalization(model)
+        # model = tf.nn.local_response_normalization(model)
 
         conv_1x1_vs_weight, conv_1x1_vs_bias = self.create_conv_vars([1, 1, 64, 64], 'conv_1x1_vs')
         model = self.conv_layer_with_relu(model, conv_1x1_vs_weight, conv_1x1_vs_bias, 1, 'VALID')
@@ -34,7 +39,7 @@ class UserModel(Tower):
         conv_3x3_1s_weight, conv_3x3_1s_bias = self.create_conv_vars([3, 3, 64, 192], 'conv_3x3_1s')
         model = self.conv_layer_with_relu(model, conv_3x3_1s_weight, conv_3x3_1s_bias, 1)
 
-        model = tf.nn.local_response_normalization(model)
+        # model = tf.nn.local_response_normalization(model)
 
         model = self.max_pool(model, 3, 2)
 
@@ -50,7 +55,7 @@ class UserModel(Tower):
         model = self.inception(model, inception_settings_4a, '4a')
 
         # first auxiliary branch for making training faster
-        aux_branch_1 = self.auxiliary_classifier(model, 512, "aux_1")
+        # aux_branch_1 = self.auxiliary_classifier(model, 512, "aux_1")
 
         inception_settings_4b = InceptionSettings(512, UserModel.all_inception_settings['4b'])
         model = self.inception(model, inception_settings_4b, '4b')
@@ -62,7 +67,7 @@ class UserModel(Tower):
         model = self.inception(model, inception_settings_4d, '4d')
 
         # second auxiliary branch for making training faster
-        aux_branch_2 = self.auxiliary_classifier(model, 528, "aux_2")
+        # aux_branch_2 = self.auxiliary_classifier(model, 528, "aux_2")
 
         inception_settings_4e = InceptionSettings(528, UserModel.all_inception_settings['4e'])
         model = self.inception(model, inception_settings_4e, '4e')
@@ -74,11 +79,14 @@ class UserModel(Tower):
 
         inception_settings_5b = InceptionSettings(832, UserModel.all_inception_settings['5b'])
         model = self.inception(model, inception_settings_5b, '5b')
-        
+
         model = self.avg_pool(model, 7, 1, 'VALID')
 
         fc_weight, fc_bias = self.create_fc_vars([1024, self.nclasses], 'fc')
         model = self.fully_connect(model, fc_weight, fc_bias)
+
+        # if self.is_training:
+        #    return [aux_branch_1, aux_branch_2, model]
 
         return model
 
@@ -89,7 +97,6 @@ class UserModel(Tower):
         accuracy = digits.classification_accuracy(model, self.y)
         self.summaries.append(tf.summary.scalar(accuracy.op.name, accuracy))
         return loss
-
 
     def inception(self, model, inception_setting, layer_name):
         weights, biases = self.create_inception_variables(inception_setting, layer_name)
@@ -107,32 +114,40 @@ class UserModel(Tower):
         final_model = tf.concat([conv_1x1, conv_3x3, conv_5x5, conv_pool], 3)
 
         return final_model
-        
+
     def create_inception_variables(self, inception_setting, layer_name):
         model_dim = inception_setting.model_dim
-        conv_1x1_1_weight, conv_1x1_1_bias = self.create_conv_vars([1, 1, model_dim, inception_setting.conv_1x1_1_layers], layer_name + '-conv_1x1_1')
-        conv_1x1_2_weight, conv_1x1_2_bias = self.create_conv_vars([1, 1, model_dim, inception_setting.conv_1x1_2_layers], layer_name + '-conv_1x1_2')
-        conv_1x1_3_weight, conv_1x1_3_bias = self.create_conv_vars([1, 1, model_dim, inception_setting.conv_1x1_3_layers], layer_name + '-conv_1x1_3')
-        conv_3x3_weight, conv_3x3_bias = self.create_conv_vars([3, 3, inception_setting.conv_1x1_2_layers, inception_setting.conv_3x3_layers], layer_name + '-conv_3x3')
-        conv_5x5_weight, conv_5x5_bias = self.create_conv_vars([5, 5, inception_setting.conv_1x1_3_layers, inception_setting.conv_5x5_layers], layer_name + '-conv_5x5')
-        conv_pool_weight, conv_pool_bias = self.create_conv_vars([1, 1, model_dim, inception_setting.conv_pool_layers], layer_name + '-conv_pool')
+        conv_1x1_1_w, conv_1x1_1_b = self.create_conv_vars([1, 1, model_dim, inception_setting.conv_1x1_1_layers],
+                                                           layer_name + '-conv_1x1_1')
+        conv_1x1_2_w, conv_1x1_2_b = self.create_conv_vars([1, 1, model_dim, inception_setting.conv_1x1_2_layers],
+                                                           layer_name + '-conv_1x1_2')
+        conv_1x1_3_w, conv_1x1_3_b = self.create_conv_vars([1, 1, model_dim, inception_setting.conv_1x1_3_layers],
+                                                           layer_name + '-conv_1x1_3')
+        conv_3x3_w, conv_3x3_b = self.create_conv_vars([3, 3, inception_setting.conv_1x1_2_layers,
+                                                        inception_setting.conv_3x3_layers],
+                                                       layer_name + '-conv_3x3')
+        conv_5x5_w, conv_5x5_b = self.create_conv_vars([5, 5, inception_setting.conv_1x1_3_layers,
+                                                        inception_setting.conv_5x5_layers],
+                                                       layer_name + '-conv_5x5')
+        conv_pool_w, conv_pool_b = self.create_conv_vars([1, 1, model_dim, inception_setting.conv_pool_layers],
+                                                         layer_name + '-conv_pool')
 
         weights = {
-            'conv_1x1_1': conv_1x1_1_weight,
-            'conv_1x1_2': conv_1x1_2_weight,
-            'conv_1x1_3': conv_1x1_3_weight,
-            'conv_3x3': conv_3x3_weight,
-            'conv_5x5': conv_5x5_weight,
-            'conv_pool': conv_pool_weight
+            'conv_1x1_1': conv_1x1_1_w,
+            'conv_1x1_2': conv_1x1_2_w,
+            'conv_1x1_3': conv_1x1_3_w,
+            'conv_3x3': conv_3x3_w,
+            'conv_5x5': conv_5x5_w,
+            'conv_pool': conv_pool_w
         }
 
         biases = {
-            'conv_1x1_1': conv_1x1_1_bias,
-            'conv_1x1_2': conv_1x1_2_bias,
-            'conv_1x1_3': conv_1x1_3_bias,
-            'conv_3x3': conv_3x3_bias,
-            'conv_5x5': conv_5x5_bias,
-            'conv_pool': conv_pool_bias
+            'conv_1x1_1': conv_1x1_1_b,
+            'conv_1x1_2': conv_1x1_2_b,
+            'conv_1x1_3': conv_1x1_3_b,
+            'conv_3x3': conv_3x3_b,
+            'conv_5x5': conv_5x5_b,
+            'conv_pool': conv_pool_b
         }
 
         return weights, biases
@@ -157,11 +172,13 @@ class UserModel(Tower):
         return new_model
 
     def max_pool(self, model, kernal_size, stride_size, padding='SAME'):
-        new_model = tf.nn.max_pool(model, ksize=[1, kernal_size, kernal_size, 1], strides=[1, stride_size, stride_size, 1], padding=padding)
+        new_model = tf.nn.max_pool(model, ksize=[1, kernal_size, kernal_size, 1],
+                                   strides=[1, stride_size, stride_size, 1], padding=padding)
         return new_model
 
     def avg_pool(self, model, kernal_size, stride_size, padding='SAME'):
-        new_model = tf.nn.avg_pool(model, ksize=[1, kernal_size, kernal_size, 1], strides=[1, stride_size, stride_size, 1], padding=padding)
+        new_model = tf.nn.avg_pool(model, ksize=[1, kernal_size, kernal_size, 1],
+                                   strides=[1, stride_size, stride_size, 1], padding=padding)
         return new_model
 
     def fully_connect(self, model, weights, biases):
@@ -189,8 +206,9 @@ class UserModel(Tower):
         bias = tf.get_variable(name, [size], initializer=tf.constant_initializer(0.2))
         return bias
 
+
 class InceptionSettings():
-    
+
     def __init__(self, model_dim, inception_settings):
         self.model_dim = model_dim
         self.conv_1x1_1_layers = inception_settings[0][0]

@@ -1,7 +1,9 @@
 # License needed
-
-import numpy as np
+from model import Tower
+from utils import model_property
 import tensorflow as tf
+import numpy as np
+import digits
 
 
 class UserModel(Tower):
@@ -129,7 +131,7 @@ class UserModel(Tower):
 
         max_grad_norm = 40.0
         grads_and_vars = [(tf.clip_by_norm(g, max_grad_norm), v) for g, v in grads_and_vars]
-        grads_and_vars = [(add_gradient_noise(g), v) for g, v in 
+        grads_and_vars = [(add_gradient_noise(g), v) for g, v in grads_and_vars]
         nil_grads_and_vars = []
         for g, v in grads_and_vars:
             if v.name in self._nil_vars:
