@@ -131,7 +131,7 @@ addons:
         packages:
             - autoconf
             - automake
-            - librool
+            - libtool
             - curl
             - make
             - g++
