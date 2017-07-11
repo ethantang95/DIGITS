@@ -26,7 +26,7 @@ cd $INSTALL_DIR
 ./autogen.sh
 ./configure --prefix=/usr
 make -j$(nproc)
-make install
+sudo make install
 ldconfig
 cd $INSTALL_DIR/python
 python setup.py install --cpp_implementation
