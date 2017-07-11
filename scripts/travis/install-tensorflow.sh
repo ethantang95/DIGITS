@@ -11,4 +11,5 @@ fi
 
 set -x
 
-pip install https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-1.2.0rc0-cp27-none-linux_x86_64.whl --upgrade
+# pip install https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-1.2.0rc0-cp27-none-linux_x86_64.whl --upgrade
+pip install tensorflow==1.12.0 --upgrade
