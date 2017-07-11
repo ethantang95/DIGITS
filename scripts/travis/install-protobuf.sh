@@ -21,12 +21,12 @@ rm -rf "$INSTALL_DIR"
 
 set -x
 
-git clone https://github.com/google/protobuf.git -b '3.3.x' /protobuf
-cd /protobuf
+git clone https://github.com/google/protobuf.git -b '3.3.x' $INSTALL_DIR
+cd $INSTALL_DIR
 ./autogen.sh
 ./configure --prefix=/usr
 make -j$(nproc)
 make install
 ldconfig
-cd /protobuf/python
+cd $INSTALL_DIR/python
 python setup.py install --cpp_implementation
