@@ -10,6 +10,7 @@ env:
     global:
         - CAFFE_ROOT=~/caffe
         - TORCH_ROOT=~/torch
+        - PROTOBUF_ROOT=~/protobuf
         - OMP_NUM_THREADS=1
         - OPENBLAS_MAIN_FREE=1
         - secure: "WSqrE+PQm76DdoRLRGKTK6fRWfXZjIb0BWCZm3IgHgFO7OE6fcK2tBnpDNNw4XQjmo27FFWlEhxN32g18P84n5PvErHaH65IuS9Nv6FkLlPXZlVqGNxbPmEA4oTkD/6Y6kZyZWZtLh2+/1ijuzQAPnIy/4BEuL8pdO+PsoJ9hYM="
@@ -76,6 +77,7 @@ cache:
     directories:
         - $CAFFE_ROOT
         - $TORCH_ROOT
+        - $PROTOBUF_ROOT
 
 addons:
     apt:
@@ -86,6 +88,7 @@ addons:
             - git
             - gfortran
             - graphviz
+            - libatlas-base-dev
             - libboost-filesystem-dev
             - libboost-python-dev
             - libboost-system-dev
@@ -95,11 +98,12 @@ addons:
             - libhdf5-serial-dev
             - libleveldb-dev
             - liblmdb-dev
-            - libopenblas-dev
+#            - libopenblas-dev
             - libopencv-dev
             - libprotobuf-dev
             - libsnappy-dev
             - protobuf-compiler
+            - python-all-dev
             - python-dev
             - python-flask
             - python-gevent
@@ -113,13 +117,25 @@ addons:
             - python-opencv
             - python-pil
             - python-pip
-            - python-protobuf
             - python-psutil
             - python-pydot
             - python-requests
             - python-scipy
             - python-six
             - python-skimage
+            - python-sklearn
+            - python-wheel
+
+addons:
+    apt:
+        packages:
+            - autoconf
+            - automake
+            - librool
+            - curl
+            - make
+            - g++
+            - unzip
 
 before_install:
     - deactivate
@@ -129,6 +145,7 @@ before_install:
 install:
     - mkdir -p ~/.config/matplotlib
     - echo "backend:agg" > ~/.config/matplotlib/matplotlibrc
+    - ./scripts/travis/install-protobuf.sh $PROTOBUF_ROOT
     - ./scripts/travis/install-caffe.sh $CAFFE_ROOT
     - if [ "$DIGITS_TEST_FRAMEWORK" == "torch" ]; then travis_wait ./scripts/travis/install-torch.sh $TORCH_ROOT; else unset TORCH_ROOT; fi
     - pip install -r ./requirements.txt --force-reinstall
