@@ -89,6 +89,7 @@ addons:
             - gfortran
             - graphviz
             - libatlas-base-dev
+            - libboost-all-dev
             - libboost-filesystem-dev
             - libboost-python-dev
             - libboost-system-dev
