@@ -12,7 +12,7 @@ Installation for [Mac](https://www.tensorflow.org/install/install_mac#installing
 
 ## Requirements
 
-DIGITS is current targetting tensorflow-gpu V1.1.
+DIGITS is current targeting tensorflow-gpu V1.2.
 
 TensorFlow for DIGITS requires one or more NVIDIA GPUs with CUDA Compute Capbility of 3.0 or higher. See [the official GPU support list](https://developer.nvidia.com/cuda-gpus) to see if your GPU supports it.
 
@@ -24,7 +24,7 @@ Along with that requirement, the following should be installed
 * cuDNN 5.1 ([download page](https://developer.nvidia.com/cudnn))
 
 ### A Note About cuDNN and TensorFlow
-Currently tensorflow v1.1 targets cuDNN 5.1. The latest cuDNN version is 6. **To have tensorflow running in digits, you must have cuDNN 5.1 installed. Currently, cuDNN 6 is incompatiable with tensorflow.** To install it, use the following command in a terminal
+Currently tensorflow v1.2 targets cuDNN 5.1. The latest cuDNN version is 6. **To have tensorflow running in digits, you must have cuDNN 5.1 installed. Currently, cuDNN 6 is incompatiable with tensorflow.** To install it, use the following command in a terminal
 
 ```
 sudo apt-get install libcudnn5

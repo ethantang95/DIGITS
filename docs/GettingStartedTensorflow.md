@@ -131,7 +131,7 @@ Function Name       | Parameters          | Description
 
 ![TensorBoard](images/TensorBoard.png)
 
-TensorBoard is a visualization tools provided by TensorFlow to see the graph of your neural network. DIGITS provides easy access to TensorBoard network visualization for your network while creating it. This can be accessed by clicking on the ```Visualize``` button under ```Custom Network``` as seen in the image below.
+TensorBoard is a visualization tools provided by TensorFlow to see the graph of your neural network. DIGITS provides easy access to TensorBoard network visualization for your network while creating it. This can be accessed by clicking on the `Visualize` button under `Custom Network` as seen in the image below.
 
 ![Visualize TensorBoard](images/visualize_button.png)
 
@@ -146,9 +146,9 @@ where `<job_dir>` is the directory where them model is being trained at, which c
 ![Job Dir](images/job-dir.png)
 
 Afterwards, you can open up the Tensorboard page by going to
-```http://localhost:6006```
+`http://localhost:6006`
 
-Or you can click the ```Tensorboard``` link under Visualization
+Or you can click the `Tensorboard` link under Visualization
 
 ![Visualize Button](images/visualize-btn.png)
 

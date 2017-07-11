@@ -624,7 +624,7 @@ function process_tf_vis(data){
     return the_data;
 }
 
-//copied from https://stackoverflow.com/questions/4565112/javascript-how-to-find-out-if-the-user-browser-is-chrome/13348618#13348618
+// From https://stackoverflow.com/a/13348618
 function isChrome() {
     var isChromium = window.chrome,
     winNav = window.navigator,
@@ -644,7 +644,7 @@ function isChrome() {
 
 function visualizeNetwork() {
     var framework = $('#framework').val();
-    var is_tf = framework.includes("ensorflow") // @TODO(tzaman) - dirty
+    var is_tf = framework.includes("ensorflow")
 
     if (is_tf) {
         if (!isChrome()) {

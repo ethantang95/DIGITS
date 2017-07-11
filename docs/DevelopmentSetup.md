@@ -20,8 +20,6 @@ To run the development server, use
 
 To successfully run all the unit tests, the following plugins have to be installed
 ```
-sudo pip install -e ./plugins/data/imageGradients
-sudo pip install -e ./plugins/view/imageGradients
 sudo pip install -r ./requirements_test.txt
 ```
 

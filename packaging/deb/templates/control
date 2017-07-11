@@ -19,8 +19,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-lmdb (>= 0.87),
  python-setuptools,
  python-wtforms (>= 2.0.1)
-Recommends: torch7-nv,
- tensorflow-gpu
+Recommends: torch7-nv
 Conflicts: digits-devbox-config (<< 3.0.0), torch7
 Description: NVIDIA DIGITS webserver
  This package installs the DIGITS webserver as a service.
