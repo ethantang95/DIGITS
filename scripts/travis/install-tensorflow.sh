@@ -15,8 +15,6 @@ sudo apt-get remove libprotobuf-dev
 
 sudo apt-get remove python-protobuf
 
-pip uninstall protobuf
-
 pip install protobuf
 
 pip show protobuf
