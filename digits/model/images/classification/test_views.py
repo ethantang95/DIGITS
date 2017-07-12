@@ -8,6 +8,9 @@ import shutil
 import tempfile
 import time
 import unittest
+import caffe_pb2
+import math
+
 
 # Find the best implementation available
 try:
@@ -22,6 +25,8 @@ import digits.dataset.images.classification.test_views
 import digits.test_views
 from digits import test_utils
 import digits.webapp
+from digits.frameworks import CaffeFramework
+from google.protobuf import text_format
 
 # May be too short on a slow system
 TIMEOUT_DATASET = 45
@@ -1117,6 +1122,36 @@ class TestCaffeCreatedCropInForm(BaseTestCreatedCropInForm, test_utils.CaffeMixi
 
 class TestCaffeCreatedCropInNetwork(BaseTestCreatedCropInNetwork, test_utils.CaffeMixin):
     pass
+
+
+@unittest.skipIf(
+    not CaffeFramework().can_accumulate_gradients(),
+    'This version of Caffe cannot accumulate gradients')
+class TestBatchAccumulationCaffe(BaseViewsTestWithDataset, test_utils.CaffeMixin):
+    TRAIN_EPOCHS = 1
+    IMAGE_COUNT = 10  # per class
+
+    def test_batch_accumulation_calculations(self):
+        batch_size = 10
+        batch_accumulation = 2
+
+        job_id = self.create_model(
+            batch_size=batch_size,
+            batch_accumulation=batch_accumulation,
+        )
+        assert self.model_wait_completion(job_id) == 'Done', 'create failed'
+        info = self.model_info(job_id)
+        solver = caffe_pb2.SolverParameter()
+        with open(os.path.join(info['directory'], info['solver file']), 'r') as infile:
+            text_format.Merge(infile.read(), solver)
+        assert solver.iter_size == batch_accumulation, \
+            'iter_size is %d instead of %d' % (solver.iter_size, batch_accumulation)
+        max_iter = int(math.ceil(
+            float(self.TRAIN_EPOCHS * self.IMAGE_COUNT * 3) /
+            (batch_size * batch_accumulation)
+        ))
+        assert solver.max_iter == max_iter,\
+            'max_iter is %d instead of %d' % (solver.max_iter, max_iter)
 
 
 class TestCaffeCreatedTallMultiStepLR(BaseTestCreatedTall, test_utils.CaffeMixin):
