@@ -8,6 +8,7 @@ python: 2.7
 
 env:
     global:
+        - PROTOBUF_ROOT=~/protobuf
         - CAFFE_ROOT=~/caffe
         - TORCH_ROOT=~/torch
         - OMP_NUM_THREADS=1
@@ -74,6 +75,7 @@ matrix:
 cache:
     apt: true
     directories:
+        - $PROTOBUF_ROOT
         - $CAFFE_ROOT
         - $TORCH_ROOT
 
@@ -97,9 +99,7 @@ addons:
             - liblmdb-dev
             - libopenblas-dev
             - libopencv-dev
-            - libprotobuf-dev
             - libsnappy-dev
-            - protobuf-compiler
             - python-dev
             - python-flask
             - python-gevent
@@ -113,7 +113,6 @@ addons:
             - python-opencv
             - python-pil
             - python-pip
-            - python-protobuf
             - python-psutil
             - python-pydot
             - python-requests
@@ -129,6 +128,7 @@ before_install:
 install:
     - mkdir -p ~/.config/matplotlib
     - echo "backend:agg" > ~/.config/matplotlib/matplotlibrc
+    - ./scripts/travis/install-protobuf.sh $PROTOBUF_ROOT
     - ./scripts/travis/install-caffe.sh $CAFFE_ROOT
     - if [ "$DIGITS_TEST_FRAMEWORK" == "torch" ]; then travis_wait ./scripts/travis/install-torch.sh $TORCH_ROOT; else unset TORCH_ROOT; fi
     - pip install -r ./requirements.txt --force-reinstall
