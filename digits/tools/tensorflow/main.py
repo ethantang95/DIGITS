@@ -43,6 +43,10 @@ from utils import model_property  # noqa
 
 import tf_data
 
+STAGE_TRAIN = 'train'
+STAGE_VAL = 'val'
+STAGE_INF = 'inf'
+
 # Constants
 TF_INTRA_OP_THREADS = 0
 TF_INTER_OP_THREADS = 0
@@ -479,8 +483,8 @@ def main(_):
         # @TODO(tzaman) - add mode checks to UserModel
 
         if FLAGS.train_db:
-            with tf.name_scope(digits.STAGE_TRAIN) as stage_scope:
-                train_model = Model(digits.STAGE_TRAIN, FLAGS.croplen, nclasses, FLAGS.optimization, FLAGS.momentum)
+            with tf.name_scope(STAGE_TRAIN) as stage_scope:
+                train_model = Model(STAGE_TRAIN, FLAGS.croplen, nclasses, FLAGS.optimization, FLAGS.momentum)
                 train_model.create_dataloader(FLAGS.train_db)
                 train_model.dataloader.setup(FLAGS.train_labels,
                                              FLAGS.shuffle,
@@ -492,8 +496,8 @@ def main(_):
                 train_model.create_model(UserModel, stage_scope)  # noqa
 
         if FLAGS.validation_db:
-            with tf.name_scope(digits.STAGE_VAL) as stage_scope:
-                val_model = Model(digits.STAGE_VAL, FLAGS.croplen, nclasses, reuse_variable=True)
+            with tf.name_scope(STAGE_VAL) as stage_scope:
+                val_model = Model(STAGE_VAL, FLAGS.croplen, nclasses, reuse_variable=True)
                 val_model.create_dataloader(FLAGS.validation_db)
                 val_model.dataloader.setup(FLAGS.validation_labels,
                                            False,
@@ -505,8 +509,8 @@ def main(_):
                 val_model.create_model(UserModel, stage_scope)  # noqa
 
         if FLAGS.inference_db:
-            with tf.name_scope(digits.STAGE_INF) as stage_scope:
-                inf_model = Model(digits.STAGE_INF, FLAGS.croplen, nclasses)
+            with tf.name_scope(STAGE_INF) as stage_scope:
+                inf_model = Model(STAGE_INF, FLAGS.croplen, nclasses)
                 inf_model.create_dataloader(FLAGS.inference_db)
                 inf_model.dataloader.setup(None, False, FLAGS.bitdepth, FLAGS.batch_size, 1, FLAGS.seed)
                 inf_model.dataloader.set_augmentation(mean_loader)
