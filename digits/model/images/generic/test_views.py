@@ -787,7 +787,7 @@ class UserModel(Tower):
         offset = tf.Print(offset,[scale, offset], message='scale offset')
         model = self.x + offset
         self.model = model
-        return tf.transpose(model, (0, 3, 2, 1))  # net output expected in NCHW format
+        return tf.transpose(model, (0, 3, 1, 2))  # net output expected in NCHW format
 
     @model_property
     def loss(self):

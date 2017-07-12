@@ -3,7 +3,7 @@ from model import Tower
 from utils import model_property
 import tensorflow as tf
 import tensorflow.contrib.slim as slim
-import digits
+import utils as digits
 
 
 class UserModel(Tower):
