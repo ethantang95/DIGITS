@@ -83,7 +83,8 @@ def save_binary(url, file_name, tmp_dir, progress):
 def retrieve_files(url, directory, progress):
     model_url = os.path.join(url, directory)
     tmp_dir = tempfile.mkdtemp()
-    info = json.loads(requests.get(os.path.join(model_url, 'info.json')).content)
+    tmp = requests.get(os.path.join(model_url, 'info.json')).content
+    info = json.loads(tmp)
 
     # How many files will we download?
     n_files = 1 + ("model file" in info or "network file" in info) + ("labels file" in info)
