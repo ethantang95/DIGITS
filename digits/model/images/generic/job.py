@@ -47,6 +47,6 @@ class GenericImageModelJob(ImageModelJob):
         else:
             for snapshot_filename in snapshot_filenames:
                 download_files.append((snapshot_filename,
-                                  os.path.basename(snapshot_filename)))
+                                       os.path.basename(snapshot_filename)))
 
         return download_files

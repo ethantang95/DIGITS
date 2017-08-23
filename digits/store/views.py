@@ -79,6 +79,7 @@ def save_binary(url, file_name, tmp_dir, progress):
                 f.write(chunk)
     return full_path
 
+
 def save_tensorflow_weights(url, file_name, tmp_dir, progress):
     full_path = os.path.join(tmp_dir, file_name)
     save_binary(url, file_name + ".index", tmp_dir, progress)
