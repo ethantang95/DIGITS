@@ -37,7 +37,9 @@ class TensorflowUploadTask(UploadPretrainedModelTask):
     @override
     def run(self, resources):
 
-        self.move_file(self.weights_path, "snapshot.ckpt")
+        self.move_file(self.weights_path + ".data-00000-of-00001", "snapshot.ckpt.data-00000-of-00001")
+        self.move_file(self.weights_path + ".index", "snapshot.ckpt.index")
+        self.move_file(self.weights_path + ".meta", "snapshot.ckpt.meta")
         self.move_file(self.model_def_path, "network.py")
 
         if self.labels_path is not None:
